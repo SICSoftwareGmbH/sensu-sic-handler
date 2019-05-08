@@ -1,3 +1,5 @@
+![https://travis-ci.org/SICSoftwareGmbH/sensu-sic-handler](https://img.shields.io/travis/SICSoftwareGmbH/sensu-sic-handler/master.svg)
+
 # Sensu Go SIC Handler
 
 The Sensu SIC handler is a [Sensu Event Handler][1] that is used by SIC! Software for dispatching events based on entity annotations.
