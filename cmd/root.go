@@ -81,7 +81,7 @@ func intValueFromEnvWithDefault(env string, defaultValue int) int {
 }
 
 func terminateWithHelpAndMessage(cmd *cobra.Command, msg string) {
-	cmd.Help()
+	_ = cmd.Help()
 
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, msg)

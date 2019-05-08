@@ -21,7 +21,7 @@ var (
 	handlerConfig    = &handler.Config{}
 )
 
-// eventCmd represents the event command
+// eventCmd represents the "event" command
 var eventCmd = &cobra.Command{
 	Use:   "event",
 	Short: "Handle event data",

@@ -8,7 +8,7 @@ import (
 	"sensu-sic-handler/redmine"
 )
 
-// redmineImportCmd represents the redmineImport command
+// redmineImportCmd represents the "redmine import" command
 var redmineImportCmd = &cobra.Command{
 	Use:   "import",
 	Short: "Import recipients from redmine",

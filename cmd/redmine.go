@@ -13,7 +13,7 @@ var (
 	redmineToken string
 )
 
-// redmineCmd represents the redmine command
+// redmineCmd represents the "redmine" command
 var redmineCmd = &cobra.Command{
 	Use:   "redmine",
 	Short: "Redmine related commands",
