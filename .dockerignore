@@ -1,0 +1,15 @@
+# docker
+Dockerfile
+docker-compose.yml
+
+# git
+/.git
+
+# dep
+/vendor
+
+# deploy
+/dist
+
+# misc
+/.data
