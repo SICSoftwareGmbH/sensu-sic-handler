@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:5-alpine
+    volumes:
+      - ./.data/redis:/data
+
+  build:
+    depends_on:
+      - redis
+    build:
+      context: ./
+    volumes:
+      - ./:/go/src/sensu-sic-handler/
