@@ -2,12 +2,12 @@
 FROM golang:1.12-alpine
 
 # Maintainer
-MAINTAINER Florian Schwab <me@ydkn.de>
+MAINTAINER Florian Schwab <florian.schwab@sic.software>
 
 # Upgrade system
 RUN apk --no-cache --no-progress --update upgrade
 
-# Install dependencies
+# Install os dependencies
 RUN apk --no-cache --no-progress --update add bash build-base git ca-certificates
 
 # Install dep
@@ -33,9 +33,6 @@ WORKDIR /go/src/sensu-sic-handler
 
 # Copy in the application code
 COPY ./ /go/src/sensu-sic-handler
-
-# Install dependencies
-RUN dep ensure
 
 # Default command
 CMD ["bash"]

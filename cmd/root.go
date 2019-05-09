@@ -57,9 +57,11 @@ func initConfig() {
 	if redisHost == "" {
 		redisHost = "localhost"
 	}
+
 	if redisPort == -1 {
 		redisPort = intValueFromEnvWithDefault("REDIS_PORT", 6379)
 	}
+
 	if redisDB == -1 {
 		redisDB = intValueFromEnvWithDefault("REDIS_DB", 0)
 	}

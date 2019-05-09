@@ -51,8 +51,18 @@ func init() {
 
 	eventCmd.PersistentFlags().StringVar(&annotationPrefix,
 		"annotation-prefix",
-		os.Getenv("EVENT_ANNOTATION_PREFIX"),
-		"The annotation prefix to use, defaults to value of EVENT_ANNOTATION_PREFIX env variable")
+		os.Getenv("ANNOTATION_PREFIX"),
+		"The annotation prefix to use, defaults to value of ANNOTATION_PREFIX env variable")
+
+	eventCmd.PersistentFlags().StringVar(&handlerConfig.SMTPAddress,
+		"smtp-address",
+		os.Getenv("SMTP_ADDRESS"),
+		"The address of the SMTP server to use, defaults to value of SMTP_ADDRESS env variable")
+
+	eventCmd.PersistentFlags().StringVar(&handlerConfig.MailFrom,
+		"mail-from",
+		os.Getenv("MAIL_FROM"),
+		"The sender address for emails, defaults to value of MAIL_FROM env variable")
 }
 
 func loadEvent() (*types.Event, error) {
