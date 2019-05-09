@@ -19,7 +19,7 @@ var (
 )
 
 // HandleMail handles mail recipients (recipient.HandlerTypeMail)
-func HandleMail(recipient *recipient.Recipient, event *sensu.Event, config *Config) error {
+func HandleMail(recipient *recipient.Recipient, event *sensu.Event, config *Config) (rerr error) {
 	if len(config.MailFrom) == 0 {
 		return errors.New("from email is empty")
 	}
@@ -58,16 +58,33 @@ func HandleMail(recipient *recipient.Recipient, event *sensu.Event, config *Conf
 	if err != nil {
 		return err
 	}
-	defer conn.Close()
+	defer func() {
+		err := conn.Close()
+		if err != nil {
+			rerr = err
+		}
+	}()
 
-	conn.Mail(fromAddress.Address)
-	conn.Rcpt(toAddress.Address)
+	err = conn.Mail(fromAddress.Address)
+	if err != nil {
+		return err
+	}
+
+	err = conn.Rcpt(toAddress.Address)
+	if err != nil {
+		return err
+	}
 
 	data, err := conn.Data()
 	if err != nil {
 		return err
 	}
-	defer data.Close()
+	defer func() {
+		err := data.Close()
+		if err != nil {
+			rerr = err
+		}
+	}()
 
 	buffer := bytes.NewBuffer(msg)
 	if _, err := buffer.WriteTo(data); err != nil {

@@ -91,7 +91,7 @@ func redmineProjectsMemberships(client *redmine.Client, projects []redmine.Proje
 			}
 		}
 
-		memberships = append(memberships, projectMemberships{ project: project, memberships: pm })
+		memberships = append(memberships, projectMemberships{project: project, memberships: pm})
 	}
 
 	return memberships, nil
