@@ -1,20 +1,19 @@
-language: go
-go:
-  - 1.12.x
+language: minimal
+
+services:
+  - docker
 
 install:
-  - go get github.com/golang/dep/cmd/dep
-  - go get golang.org/x/lint/golint
-  - go get github.com/kisielk/errcheck
-  - go get github.com/jgautheron/goconst/cmd/goconst
-  - go get github.com/gordonklaus/ineffassign
-  - dep ensure
+  - docker build -t sensu-sic-handler .
+  - export CONTAINER_ID="$(docker run -d -v $(pwd):/go/src/sensu-sic-handler sensu-sic-handler sleep 3600)"
+  - docker exec ${CONTAINER_ID} sh -c 'dep ensure'
 
 script:
-  - golint -set_exit_status $(go list ./...)
-  - errcheck ./...
-  - goconst -ignore=^vendor ./...
-  - ineffassign ./
+  - docker exec ${CONTAINER_ID} sh -c 'cd .. && golint -set_exit_status $(go list sensu-sic-handler/...)'
+  - docker exec ${CONTAINER_ID} sh -c 'errcheck ./...'
+  - docker exec ${CONTAINER_ID} sh -c 'goconst -ignore=^vendor ./...'
+  - docker exec ${CONTAINER_ID} sh -c 'ineffassign ./'
+  - docker exec ${CONTAINER_ID} sh -c 'go build -a'
 
 before_script:
   - echo "REPO ${TRAVIS_REPO_SLUG} TAG ${TRAVIS_TAG}"

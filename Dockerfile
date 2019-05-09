@@ -31,8 +31,5 @@ RUN go get github.com/gordonklaus/ineffassign
 # Set the working directory
 WORKDIR /go/src/sensu-sic-handler
 
-# Copy in the application code
-COPY ./ /go/src/sensu-sic-handler
-
 # Default command
 CMD ["bash"]
