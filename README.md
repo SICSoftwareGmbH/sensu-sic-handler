@@ -1,4 +1,4 @@
-![https://travis-ci.org/SICSoftwareGmbH/sensu-sic-handler](https://img.shields.io/travis/SICSoftwareGmbH/sensu-sic-handler/master.svg)
+[![Travis](https://img.shields.io/travis/SICSoftwareGmbH/sensu-sic-handler/master.svg)](https://travis-ci.org/SICSoftwareGmbH/sensu-sic-handler)
 
 # Sensu Go SIC Handler
 
