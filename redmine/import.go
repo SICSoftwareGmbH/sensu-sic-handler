@@ -59,9 +59,7 @@ func redmineProjects(client *redmine.Client) ([]redmine.Project, error) {
 			return nil, errors.New("unable to fetch projects")
 		}
 
-		for _, p := range items {
-			projects = append(projects, p)
-		}
+		projects = append(projects, items...)
 
 		client.Offset += client.Limit
 
@@ -78,7 +76,7 @@ func redmineProjectsMemberships(client *redmine.Client, projects []redmine.Proje
 	memberships := make([]projectMemberships, 0)
 
 	for _, project := range projects {
-		pm := make(map[int][]redmine.IdName, 0)
+		pm := make(map[int][]redmine.IdName)
 
 		items, err := client.Memberships(project.Id)
 		if err != nil {

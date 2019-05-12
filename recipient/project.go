@@ -19,8 +19,7 @@ func ParseProject(redisClient *redis.Client, value string) []*Recipient {
 
 	args := strings.Split(value, ":")
 
-	switch len(args) {
-	case 2:
+	if len(args) == 2 {
 		mails := readProjectMailsFromRedis(redisClient, args[0], args[1])
 
 		for _, m := range mails {

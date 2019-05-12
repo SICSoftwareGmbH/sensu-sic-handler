@@ -15,10 +15,8 @@ func ParseSlack(redisClient *redis.Client, value string) []*Recipient {
 
 	args := strings.Split(value, ":")
 
-	switch len(args) {
-	case 2:
-		switch args[0] {
-		case "channel":
+	if len(args) == 2 {
+		if args[0] == "channel" {
 			recipients = append(recipients, &Recipient{
 				Type: HandlerTypeSlack,
 				ID:   fmt.Sprintf("slack|channel|%s", args[1]),

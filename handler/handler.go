@@ -18,7 +18,6 @@ func Handle(recipients []*recipient.Recipient, event *sensu.Event, config *Confi
 	for _, rcpt := range recipients {
 		if _, ok := recipientMap[rcpt.ID]; !ok {
 			var err error
-			err = nil
 
 			switch rcpt.Type {
 			case recipient.HandlerTypeNone:
@@ -29,7 +28,7 @@ func Handle(recipients []*recipient.Recipient, event *sensu.Event, config *Confi
 			case recipient.HandlerTypeSlack:
 				err = HandleSlack(rcpt, event, config)
 			default:
-				fmt.Fprintln(os.Stderr, fmt.Sprintf("unsupported handler: %s", rcpt))
+				fmt.Fprintln(os.Stderr, fmt.Sprintf("unsupported handler: %q", rcpt))
 			}
 
 			if err != nil {

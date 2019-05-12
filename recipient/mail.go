@@ -15,8 +15,7 @@ func ParseMail(redisClient *redis.Client, value string) []*Recipient {
 
 	args := strings.Split(value, ":")
 
-	switch len(args) {
-	case 1:
+	if len(args) == 1 {
 		recipients = append(recipients, &Recipient{
 			Type: HandlerTypeMail,
 			ID:   fmt.Sprintf("mail|%s", args[0]),

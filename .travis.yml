@@ -9,11 +9,7 @@ install:
   - docker exec ${CONTAINER_ID} sh -c 'dep ensure'
 
 script:
-  - docker exec ${CONTAINER_ID} sh -c 'cd .. && golint -set_exit_status $(go list sensu-sic-handler/...)'
-  - docker exec ${CONTAINER_ID} sh -c 'errcheck ./...'
-  - docker exec ${CONTAINER_ID} sh -c 'goconst -ignore=^vendor ./...'
-  - docker exec ${CONTAINER_ID} sh -c 'ineffassign ./'
-  - docker exec ${CONTAINER_ID} sh -c 'go build -a'
+  - docker exec ${CONTAINER_ID} sh -c 'golangci-lint run -E gofmt -E gosec -E dupl -E goconst -E gocritic -E lll -E maligned -E misspell -E nakedret -E prealloc -E scopelint -E unconvert -E unparam'
 
 before_script:
   - echo "REPO ${TRAVIS_REPO_SLUG} TAG ${TRAVIS_TAG}"

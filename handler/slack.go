@@ -46,17 +46,17 @@ func slackMessageAttachment(event *sensu.Event) *slack.Attachment {
 		Fallback: formattedMessage(event),
 		Color:    slackMessageColor(event),
 		Fields: []*slack.AttachmentField{
-			&slack.AttachmentField{
+			{
 				Title: "Status",
 				Value: messageStatus(event),
 				Short: false,
 			},
-			&slack.AttachmentField{
+			{
 				Title: "Entity",
 				Value: event.Entity.Name,
 				Short: true,
 			},
-			&slack.AttachmentField{
+			{
 				Title: "Check",
 				Value: event.Check.Name,
 				Short: true,

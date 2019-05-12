@@ -15,8 +15,7 @@ func ParseXMPP(redisClient *redis.Client, value string) []*Recipient {
 
 	args := strings.Split(value, ":")
 
-	switch len(args) {
-	case 2:
+	if len(args) == 2 {
 		switch args[0] {
 		case "muc":
 			recipients = append(recipients, &Recipient{

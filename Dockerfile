@@ -8,25 +8,13 @@ MAINTAINER Florian Schwab <florian.schwab@sic.software>
 RUN apk --no-cache --no-progress --update upgrade
 
 # Install os dependencies
-RUN apk --no-cache --no-progress --update add bash build-base git ca-certificates
+RUN apk --no-cache --no-progress --update add bash build-base curl git ca-certificates
 
 # Install dep
-RUN go get github.com/golang/dep/cmd/dep
+RUN curl -sfL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
-# Install cobra
-RUN go get github.com/spf13/cobra/cobra
-
-# Install golint
-RUN go get golang.org/x/lint/golint
-
-# Install errcheck
-RUN go get github.com/kisielk/errcheck
-
-# Install goconst
-RUN go get github.com/jgautheron/goconst/cmd/goconst
-
-# Install ineffassign
-RUN go get github.com/gordonklaus/ineffassign
+# Install golangci-lint
+RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b /usr/local/bin v1.16.0
 
 # Install goreleaser
 RUN wget -q -O /tmp/goreleaser.tar.gz \
