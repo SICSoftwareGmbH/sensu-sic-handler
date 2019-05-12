@@ -63,6 +63,21 @@ func init() {
 		"mail-from",
 		os.Getenv("MAIL_FROM"),
 		"The sender address for emails, defaults to value of MAIL_FROM env variable")
+
+	eventCmd.PersistentFlags().StringVar(&handlerConfig.SlackWebhookURL,
+		"slack-webhook-url",
+		os.Getenv("SLACK_WEBHOOK_URL"),
+		"The webhook url to send messages to, defaults to value of SLACK_WEBHOOK_URL env variable")
+
+	eventCmd.PersistentFlags().StringVar(&handlerConfig.SlackUsername,
+		"slack-username",
+		"sensu",
+		"The username that messages will be sent as")
+
+	eventCmd.PersistentFlags().StringVar(&handlerConfig.SlackIconURL,
+		"slack-icon-url",
+		"http://s3-us-west-2.amazonaws.com/sensuapp.org/sensu.png",
+		"A URL to an image to use as the user avatar")
 }
 
 func loadEvent() (*types.Event, error) {

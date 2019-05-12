@@ -1,4 +1,5 @@
 // Copyright © 2019 SIC! Software GmbH
+// Adapted from https://github.com/sensu/sensu-email-handler
 
 package handler
 

@@ -2,6 +2,14 @@
   go-tests = true
 
 [[constraint]]
+  name = "github.com/spf13/cobra"
+  version = "0.0.3"
+
+[[constraint]]
+  name = "github.com/sensu/sensu-go"
+  version = "5.7.0"
+
+[[constraint]]
   name = "github.com/go-redis/redis"
   version = "6.15.2"
 
@@ -10,9 +18,5 @@
   name = "github.com/mattn/go-redmine"
 
 [[constraint]]
-  name = "github.com/sensu/sensu-go"
-  version = "5.7.0"
-
-[[constraint]]
-  name = "github.com/spf13/cobra"
-  version = "0.0.3"
+  branch = "master"
+  name = "github.com/bluele/slack"

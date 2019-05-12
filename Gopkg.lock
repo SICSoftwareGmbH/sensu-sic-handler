@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  branch = "master"
+  digest = "1:31f35c915881a78649bf4af507d8dea4935c0eafcf0e8c96aece151930cb140b"
+  name = "github.com/bluele/slack"
+  packages = ["."]
+  pruneopts = "T"
+  revision = "b4b4d354a079fbf4bd948faad01b32cecb2ffe03"
+
+[[projects]]
   digest = "1:194feab48e33cf63e78705e342da56807e9236f7b52513dee714e70c1cb3272e"
   name = "github.com/coreos/etcd"
   packages = [
@@ -147,19 +155,28 @@
   version = "v1.0.3"
 
 [[projects]]
-  digest = "1:e441ead43d438bc8c5b2ecffbdd6cfd9297181f9eedc6b22e872f52aeb8e295f"
+  branch = "master"
+  digest = "1:dadb7a0fd6196a294db8552352b41554ff862c6d632db861761d89570757a103"
   name = "golang.org/x/net"
   packages = [
     "context",
+    "http/httpguts",
     "http2",
     "http2/hpack",
     "idna",
     "internal/timeseries",
-    "lex/httplex",
     "trace",
   ]
   pruneopts = "T"
-  revision = "66aacef3dd8a676686c7ae3716979581e8b03c47"
+  revision = "a4d6f7feada510cc50e69a37b484cb0fdc6b7876"
+
+[[projects]]
+  branch = "master"
+  digest = "1:283eaa9d5d250ff018de41b535f5d92af28c30facbc27c7e99c78175375b1f44"
+  name = "golang.org/x/sys"
+  packages = ["unix"]
+  pruneopts = "T"
+  revision = "a5b02f93d862f065920dd6a40dddc66b60d0dec4"
 
 [[projects]]
   digest = "1:0a6103b1dc59b52f7e64a491b398b854c0fcaacde43c25ce468610a64311b72d"
@@ -195,30 +212,45 @@
   revision = "b515fa19cec88c32f305a962f34ae60068947aea"
 
 [[projects]]
-  digest = "1:3d6c0ee23a74fb46aa44470ac38a1ea04273e036333a4fa50ef9d6ddfe273be5"
+  digest = "1:dbb3ac0403bd9f4036537d4aa3a518d049fff68759d40db2ed22eeb83d9892d8"
   name = "google.golang.org/grpc"
   packages = [
     ".",
     "balancer",
+    "balancer/base",
+    "balancer/roundrobin",
+    "binarylog/grpc_binarylog_v1",
     "codes",
     "connectivity",
     "credentials",
-    "grpclb/grpc_lb_v1/messages",
+    "credentials/internal",
+    "encoding",
+    "encoding/proto",
     "grpclog",
     "internal",
+    "internal/backoff",
+    "internal/balancerload",
+    "internal/binarylog",
+    "internal/channelz",
+    "internal/envconfig",
+    "internal/grpcrand",
+    "internal/grpcsync",
+    "internal/syscall",
+    "internal/transport",
     "keepalive",
     "metadata",
     "naming",
     "peer",
     "resolver",
+    "resolver/dns",
+    "resolver/passthrough",
     "stats",
     "status",
     "tap",
-    "transport",
   ]
   pruneopts = "T"
-  revision = "5b3c4e850e90a4cf6a20ebd46c8b32a0a3afcb9e"
-  version = "v1.7.5"
+  revision = "25c4f928eaa6d96443009bd842389fb4fa48664e"
+  version = "v1.20.1"
 
 [[projects]]
   digest = "1:9935525a8c49b8434a0b0a54e1980e94a6fae73aaff45c5d33ba8dff69de123e"
@@ -235,6 +267,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/bluele/slack",
     "github.com/go-redis/redis",
     "github.com/mattn/go-redmine",
     "github.com/sensu/sensu-go/types",
