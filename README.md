@@ -1,4 +1,6 @@
+[![GitHub release](https://img.shields.io/github/tag/SICSoftwareGmbH/sensu-sic-handler.svg?label=latest)](https://github.com/SICSoftwareGmbH/sensu-sic-handler/releases)
 [![Travis](https://img.shields.io/travis/SICSoftwareGmbH/sensu-sic-handler/master.svg)](https://travis-ci.org/SICSoftwareGmbH/sensu-sic-handler)
+[![License](https://img.shields.io/github/license/SICSoftwareGmbH/sensu-sic-handler.svg)](./LICENSE)
 
 # Sensu Go SIC Handler
 
