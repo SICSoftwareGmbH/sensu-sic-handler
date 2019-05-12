@@ -26,6 +26,6 @@ func init() {
 		"",
 		"The redmine token used for authentication")
 
-	viper.BindPFlag("redmine-url", redmineCmd.PersistentFlags().Lookup("redmine-url"))
-	viper.BindPFlag("redmine-token", redmineCmd.PersistentFlags().Lookup("redmine-token"))
+	_ = viper.BindPFlag("redmine-url", redmineCmd.PersistentFlags().Lookup("redmine-url"))
+	_ = viper.BindPFlag("redmine-token", redmineCmd.PersistentFlags().Lookup("redmine-token"))
 }

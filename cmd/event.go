@@ -81,13 +81,13 @@ func init() {
 		"http://s3-us-west-2.amazonaws.com/sensuapp.org/sensu.png",
 		"A URL to an image to use as the user avatar")
 
-	viper.BindPFlag("outputs", eventCmd.PersistentFlags().Lookup("outputs"))
-	viper.BindPFlag("annotation-prefix", eventCmd.PersistentFlags().Lookup("annotation-prefix"))
-	viper.BindPFlag("smtp-address", eventCmd.PersistentFlags().Lookup("smtp-address"))
-	viper.BindPFlag("mail-from", eventCmd.PersistentFlags().Lookup("mail-from"))
-	viper.BindPFlag("slack-webhook-url", eventCmd.PersistentFlags().Lookup("slack-webhook-url"))
-	viper.BindPFlag("slack-username", eventCmd.PersistentFlags().Lookup("slack-username"))
-	viper.BindPFlag("slack-icon-url", eventCmd.PersistentFlags().Lookup("slack-icon-url"))
+	_ = viper.BindPFlag("outputs", eventCmd.PersistentFlags().Lookup("outputs"))
+	_ = viper.BindPFlag("annotation-prefix", eventCmd.PersistentFlags().Lookup("annotation-prefix"))
+	_ = viper.BindPFlag("smtp-address", eventCmd.PersistentFlags().Lookup("smtp-address"))
+	_ = viper.BindPFlag("mail-from", eventCmd.PersistentFlags().Lookup("mail-from"))
+	_ = viper.BindPFlag("slack-webhook-url", eventCmd.PersistentFlags().Lookup("slack-webhook-url"))
+	_ = viper.BindPFlag("slack-username", eventCmd.PersistentFlags().Lookup("slack-username"))
+	_ = viper.BindPFlag("slack-icon-url", eventCmd.PersistentFlags().Lookup("slack-icon-url"))
 }
 
 func loadEvent() (*types.Event, error) {

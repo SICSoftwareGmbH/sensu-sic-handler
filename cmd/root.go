@@ -55,9 +55,9 @@ func init() {
 		0,
 		"The redis db number")
 
-	viper.BindPFlag("redis-host", rootCmd.PersistentFlags().Lookup("redis-host"))
-	viper.BindPFlag("redis-port", rootCmd.PersistentFlags().Lookup("redis-port"))
-	viper.BindPFlag("redis-db", rootCmd.PersistentFlags().Lookup("redis-db"))
+	_ = viper.BindPFlag("redis-host", rootCmd.PersistentFlags().Lookup("redis-host"))
+	_ = viper.BindPFlag("redis-port", rootCmd.PersistentFlags().Lookup("redis-port"))
+	_ = viper.BindPFlag("redis-db", rootCmd.PersistentFlags().Lookup("redis-db"))
 }
 
 // setup default values and variables
