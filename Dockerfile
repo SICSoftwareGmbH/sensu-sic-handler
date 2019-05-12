@@ -18,7 +18,7 @@ RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.s
 
 # Install goreleaser
 RUN wget -q -O /tmp/goreleaser.tar.gz \
-  https://github.com/goreleaser/goreleaser/releases/download/v0.106.0/goreleaser_Linux_arm64.tar.gz && \
+  https://github.com/goreleaser/goreleaser/releases/download/v0.106.0/goreleaser_Linux_x86_64.tar.gz && \
   tar -xf /tmp/goreleaser.tar.gz -C /usr/local/bin && rm -rf /tmp/*
 
 # Set the working directory
