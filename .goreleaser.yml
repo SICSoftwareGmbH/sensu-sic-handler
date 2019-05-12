@@ -9,20 +9,14 @@ builds:
       - freebsd
       - linux
       - netbsd
-      - solaris
       - windows
     goarch:
       - amd64
-      - 386
       - arm
       - arm64
     goarm:
-      - 5
       - 6
       - 7
-
-checksum:
-  name_template: "{{ .ProjectName }}_{{ .Version }}_sha256-checksums.txt"
 
 archives:
   - format: tar.gz
@@ -30,3 +24,17 @@ archives:
       - LICENSE
       - README.md
       - CHANGELOG.md
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+checksum:
+  name_template: "{{ .ProjectName }}_sha512_checksums.txt"
+  algorithm: sha512
+
+release:
+  prerelease: auto
