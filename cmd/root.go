@@ -3,8 +3,8 @@
 package cmd
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/go-redis/redis"
 	"github.com/spf13/cobra"

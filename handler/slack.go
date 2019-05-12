@@ -6,8 +6,8 @@ package handler
 import (
 	"errors"
 
-	sensu "github.com/sensu/sensu-go/types"
 	"github.com/bluele/slack"
+	sensu "github.com/sensu/sensu-go/types"
 
 	"sensu-sic-handler/recipient"
 )

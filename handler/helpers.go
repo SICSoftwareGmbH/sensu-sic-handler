@@ -3,8 +3,8 @@
 package handler
 
 import (
-	"fmt"
 	"bytes"
+	"fmt"
 	"strings"
 	"text/template"
 

@@ -3,10 +3,10 @@
 package recipient
 
 import (
-	"fmt"
-	"strings"
-	"strconv"
 	"encoding/json"
+	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/go-redis/redis"
 

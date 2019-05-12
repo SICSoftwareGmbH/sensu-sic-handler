@@ -3,12 +3,12 @@
 package cmd
 
 import (
-	"os"
-	"fmt"
-	"errors"
-	"strings"
-	"io/ioutil"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"strings"
 
 	"github.com/sensu/sensu-go/types"
 	"github.com/spf13/cobra"
@@ -176,11 +176,17 @@ func filterRecipients(recipients []*recipient.Recipient) []*recipient.Recipient 
 	for _, rcpt := range recipients {
 		switch rcpt.Type {
 		case recipient.HandlerTypeMail:
-			if useMail { filtered = append(filtered, rcpt) }
+			if useMail {
+				filtered = append(filtered, rcpt)
+			}
 		case recipient.HandlerTypeSlack:
-			if useSlack { filtered = append(filtered, rcpt) }
+			if useSlack {
+				filtered = append(filtered, rcpt)
+			}
 		case recipient.HandlerTypeXMPP:
-			if useXMPP { filtered = append(filtered, rcpt) }
+			if useXMPP {
+				filtered = append(filtered, rcpt)
+			}
 		}
 	}
 
