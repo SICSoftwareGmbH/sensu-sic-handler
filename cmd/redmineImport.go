@@ -4,6 +4,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"sensu-sic-handler/redmine"
 )
@@ -18,17 +19,17 @@ var redmineImportCmd = &cobra.Command{
 			return
 		}
 
-		if redmineURL == "" {
+		if viper.GetString("redmine-url") == "" {
 			terminateWithHelpAndMessage(cmd, "redmine url is empty")
 			return
 		}
 
-		if redmineToken == "" {
+		if viper.GetString("redmine-token") == "" {
 			terminateWithHelpAndMessage(cmd, "redmine token is empty")
 			return
 		}
 
-		err := redmine.Import(redmineURL, redmineToken, redisClient)
+		err := redmine.Import(viper.GetString("redmine-url"), viper.GetString("redmine-token"), redisClient)
 		if err != nil {
 			terminateWithHelpAndMessage(cmd, err.Error())
 			return

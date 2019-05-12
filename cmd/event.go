@@ -8,17 +8,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/sensu/sensu-go/types"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"sensu-sic-handler/handler"
 	"sensu-sic-handler/recipient"
-)
-
-var (
-	annotationPrefix string
-	handlerConfig    = &handler.Config{}
 )
 
 // eventCmd represents the "event" command
@@ -49,35 +46,48 @@ var eventCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(eventCmd)
 
-	eventCmd.PersistentFlags().StringVar(&annotationPrefix,
+	eventCmd.PersistentFlags().String(
+		"outputs",
+		"mail,slack,xmpp",
+		"The outputs to use, defaults to 'mail,slack,xmpp'")
+
+	eventCmd.PersistentFlags().String(
 		"annotation-prefix",
-		os.Getenv("ANNOTATION_PREFIX"),
-		"The annotation prefix to use, defaults to value of ANNOTATION_PREFIX env variable")
+		"sic.software",
+		"The annotation prefix to use")
 
-	eventCmd.PersistentFlags().StringVar(&handlerConfig.SMTPAddress,
+	eventCmd.PersistentFlags().String(
 		"smtp-address",
-		os.Getenv("SMTP_ADDRESS"),
-		"The address of the SMTP server to use, defaults to value of SMTP_ADDRESS env variable")
+		"localhost",
+		"The address of the SMTP server to use, defaults to localhost")
 
-	eventCmd.PersistentFlags().StringVar(&handlerConfig.MailFrom,
+	eventCmd.PersistentFlags().String(
 		"mail-from",
-		os.Getenv("MAIL_FROM"),
-		"The sender address for emails, defaults to value of MAIL_FROM env variable")
+		"",
+		"The sender address for emails")
 
-	eventCmd.PersistentFlags().StringVar(&handlerConfig.SlackWebhookURL,
+	eventCmd.PersistentFlags().String(
 		"slack-webhook-url",
-		os.Getenv("SLACK_WEBHOOK_URL"),
-		"The webhook url to send messages to, defaults to value of SLACK_WEBHOOK_URL env variable")
+		"",
+		"The webhook url to send messages to")
 
-	eventCmd.PersistentFlags().StringVar(&handlerConfig.SlackUsername,
+	eventCmd.PersistentFlags().String(
 		"slack-username",
 		"sensu",
 		"The username that messages will be sent as")
 
-	eventCmd.PersistentFlags().StringVar(&handlerConfig.SlackIconURL,
+	eventCmd.PersistentFlags().String(
 		"slack-icon-url",
 		"http://s3-us-west-2.amazonaws.com/sensuapp.org/sensu.png",
 		"A URL to an image to use as the user avatar")
+
+	_ = viper.BindPFlag("outputs", eventCmd.PersistentFlags().Lookup("outputs"))
+	_ = viper.BindPFlag("annotation-prefix", eventCmd.PersistentFlags().Lookup("annotation-prefix"))
+	_ = viper.BindPFlag("smtp-address", eventCmd.PersistentFlags().Lookup("smtp-address"))
+	_ = viper.BindPFlag("mail-from", eventCmd.PersistentFlags().Lookup("mail-from"))
+	_ = viper.BindPFlag("slack-webhook-url", eventCmd.PersistentFlags().Lookup("slack-webhook-url"))
+	_ = viper.BindPFlag("slack-username", eventCmd.PersistentFlags().Lookup("slack-username"))
+	_ = viper.BindPFlag("slack-icon-url", eventCmd.PersistentFlags().Lookup("slack-icon-url"))
 }
 
 func loadEvent() (*types.Event, error) {
@@ -125,8 +135,18 @@ func handleEvent(event *types.Event) error {
 		return nil
 	}
 
-	if val, ok := event.Entity.Annotations[fmt.Sprintf("%s/recipients", annotationPrefix)]; ok {
+	if val, ok := event.Entity.Annotations[fmt.Sprintf("%s/recipients", viper.GetString("annotation-prefix"))]; ok {
+		handlerConfig := &handler.Config{
+			SMTPAddress:     viper.GetString("smtp-address"),
+			MailFrom:        viper.GetString("mail-from"),
+			SlackWebhookURL: viper.GetString("slack-webhook-url"),
+			SlackUsername:   viper.GetString("slack-username"),
+			SlackIconURL:    viper.GetString("slack-icon-url"),
+		}
+
 		recipients := recipient.Parse(redisClient, val)
+
+		recipients = filterRecipients(recipients)
 
 		err := handler.Handle(recipients, event, handlerConfig)
 		if err != nil {
@@ -135,4 +155,40 @@ func handleEvent(event *types.Event) error {
 	}
 
 	return nil
+}
+
+func filterRecipients(recipients []*recipient.Recipient) []*recipient.Recipient {
+	filtered := make([]*recipient.Recipient, 0)
+
+	useMail, useSlack, useXMPP := false, false, false
+
+	for _, output := range strings.Split(viper.GetString("outputs"), ",") {
+		switch output {
+		case "mail":
+			useMail = true
+		case "slack":
+			useSlack = true
+		case "xmpp":
+			useXMPP = true
+		}
+	}
+
+	for _, rcpt := range recipients {
+		switch rcpt.Type {
+		case recipient.HandlerTypeMail:
+			if useMail {
+				filtered = append(filtered, rcpt)
+			}
+		case recipient.HandlerTypeSlack:
+			if useSlack {
+				filtered = append(filtered, rcpt)
+			}
+		case recipient.HandlerTypeXMPP:
+			if useXMPP {
+				filtered = append(filtered, rcpt)
+			}
+		}
+	}
+
+	return filtered
 }

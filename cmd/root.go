@@ -5,16 +5,14 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/go-redis/redis"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
-	redisHost   string
-	redisPort   int
-	redisDB     int
+	cfgFile     string
 	redisClient *redis.Client
 )
 
@@ -36,50 +34,47 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&redisHost,
+	rootCmd.PersistentFlags().StringVarP(&cfgFile,
+		"config",
+		"c",
+		os.Getenv("SIC_CONFIG"),
+		"Configuration file to use, defaults to value of SIC_CONFIG env variable")
+
+	rootCmd.PersistentFlags().String(
 		"redis-host",
-		os.Getenv("REDIS_HOST"),
-		"The redis hostname, defaults to value of REDIS_HOST env variable")
+		"localhost",
+		"The redis hostname")
 
-	rootCmd.PersistentFlags().IntVar(&redisPort,
+	rootCmd.PersistentFlags().Int(
 		"redis-port",
-		-1,
-		"The redis port, defaults to value of REDIS_PORT env variable")
+		6379,
+		"The redis port")
 
-	rootCmd.PersistentFlags().IntVar(&redisDB,
+	rootCmd.PersistentFlags().Int(
 		"redis-db",
-		-1,
-		"The redis db, defaults to value of REDIS_DB env variable")
+		0,
+		"The redis db number")
+
+	_ = viper.BindPFlag("redis-host", rootCmd.PersistentFlags().Lookup("redis-host"))
+	_ = viper.BindPFlag("redis-port", rootCmd.PersistentFlags().Lookup("redis-port"))
+	_ = viper.BindPFlag("redis-db", rootCmd.PersistentFlags().Lookup("redis-db"))
 }
 
 // setup default values and variables
 func initConfig() {
-	if redisHost == "" {
-		redisHost = "localhost"
+	if cfgFile != "" {
+		// Use config file from the flag.
+		viper.SetConfigFile(cfgFile)
+
+		// If a config file is found, read it in.
+		err := viper.ReadInConfig()
+		if err != nil {
+			terminateWithError(err)
+		}
 	}
 
-	if redisPort == -1 {
-		redisPort = intValueFromEnvWithDefault("REDIS_PORT", 6379)
-	}
-
-	if redisDB == -1 {
-		redisDB = intValueFromEnvWithDefault("REDIS_DB", 0)
-	}
-
-	redisClient = redis.NewClient(&redis.Options{Addr: fmt.Sprintf("%s:%d", redisHost, redisPort), DB: redisDB})
-}
-
-func intValueFromEnvWithDefault(env string, defaultValue int) int {
-	if os.Getenv(env) == "" {
-		return defaultValue
-	}
-
-	i, err := strconv.Atoi(os.Getenv(env))
-	if err != nil {
-		return defaultValue
-	}
-
-	return i
+	redisAddr := fmt.Sprintf("%s:%d", viper.GetString("redis-host"), viper.GetInt("redis-port"))
+	redisClient = redis.NewClient(&redis.Options{Addr: redisAddr, DB: viper.GetInt("redis-db")})
 }
 
 func terminateWithHelpAndMessage(cmd *cobra.Command, msg string) {
@@ -87,4 +82,9 @@ func terminateWithHelpAndMessage(cmd *cobra.Command, msg string) {
 
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, msg)
+}
+
+func terminateWithError(err error) {
+	fmt.Println(err)
+	os.Exit(1)
 }

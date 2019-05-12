@@ -3,14 +3,8 @@
 package cmd
 
 import (
-	"os"
-
 	"github.com/spf13/cobra"
-)
-
-var (
-	redmineURL   string
-	redmineToken string
+	"github.com/spf13/viper"
 )
 
 // redmineCmd represents the "redmine" command
@@ -22,13 +16,16 @@ var redmineCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(redmineCmd)
 
-	redmineCmd.PersistentFlags().StringVar(&redmineURL,
+	redmineCmd.PersistentFlags().String(
 		"redmine-url",
-		os.Getenv("REDMINE_URL"),
-		"The redmine url to import data from, defaults to value of REDMINE_URL env variable")
+		"",
+		"The redmine url to import data from")
 
-	redmineCmd.PersistentFlags().StringVar(&redmineToken,
+	redmineCmd.PersistentFlags().String(
 		"redmine-token",
-		os.Getenv("REDMINE_TOKEN"),
-		"The redmine token used for authentication, defaults to value of REDMINE_TOKEN env variable")
+		"",
+		"The redmine token used for authentication")
+
+	_ = viper.BindPFlag("redmine-url", redmineCmd.PersistentFlags().Lookup("redmine-url"))
+	_ = viper.BindPFlag("redmine-token", redmineCmd.PersistentFlags().Lookup("redmine-token"))
 }
