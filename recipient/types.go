@@ -2,20 +2,20 @@
 
 package recipient
 
-// HandlerType type of recipient
-type HandlerType int
+// OutputType type of recipient
+type OutputType int
 
-// Handler types
+// Output types
 const (
-	HandlerTypeNone  HandlerType = 0
-	HandlerTypeMail  HandlerType = 1
-	HandlerTypeXMPP  HandlerType = 2
-	HandlerTypeSlack HandlerType = 3
+	OutputTypeNone  OutputType = 0
+	OutputTypeMail  OutputType = 1
+	OutputTypeXMPP  OutputType = 2
+	OutputTypeSlack OutputType = 3
 )
 
 // Recipient recipient for notifications
 type Recipient struct {
-	Type HandlerType
+	Type OutputType
 	ID   string
 	Args map[string]string
 }

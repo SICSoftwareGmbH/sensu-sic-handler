@@ -1,7 +1,7 @@
 // Copyright © 2019 SIC! Software GmbH
 // Adapted from https://github.com/sensu/sensu-slack-handler
 
-package handler
+package output
 
 import (
 	"errors"
@@ -12,8 +12,8 @@ import (
 	"sensu-sic-handler/recipient"
 )
 
-// HandleSlack handles slack recipients (recipient.HandlerTypeSlack)
-func HandleSlack(recipient *recipient.Recipient, event *sensu.Event, config *Config) error {
+// Slack handles slack recipients (recipient.HandlerTypeSlack)
+func Slack(recipient *recipient.Recipient, event *sensu.Event, config *Config) error {
 	if len(config.SlackWebhookURL) == 0 {
 		return errors.New("webhook url is empty")
 	}

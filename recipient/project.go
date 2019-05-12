@@ -24,7 +24,7 @@ func ParseProject(redisClient *redis.Client, value string) []*Recipient {
 
 		for _, m := range mails {
 			recipients = append(recipients, &Recipient{
-				Type: HandlerTypeMail,
+				Type: OutputTypeMail,
 				ID:   fmt.Sprintf("mail|%s", m),
 				Args: map[string]string{"mail": m},
 			})

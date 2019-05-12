@@ -1,6 +1,6 @@
 // Copyright © 2019 SIC! Software GmbH
 
-package handler
+package output
 
 import (
 	"bytes"

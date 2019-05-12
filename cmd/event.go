@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"sensu-sic-handler/handler"
+	"sensu-sic-handler/output"
 	"sensu-sic-handler/recipient"
 )
 
@@ -136,7 +136,7 @@ func handleEvent(event *types.Event) error {
 	}
 
 	if val, ok := event.Entity.Annotations[fmt.Sprintf("%s/recipients", viper.GetString("annotation-prefix"))]; ok {
-		handlerConfig := &handler.Config{
+		outputConfig := &output.Config{
 			SMTPAddress:     viper.GetString("smtp-address"),
 			MailFrom:        viper.GetString("mail-from"),
 			SlackWebhookURL: viper.GetString("slack-webhook-url"),
@@ -148,7 +148,7 @@ func handleEvent(event *types.Event) error {
 
 		recipients = filterRecipients(recipients)
 
-		err := handler.Handle(recipients, event, handlerConfig)
+		err := output.Notify(recipients, event, outputConfig)
 		if err != nil {
 			return err
 		}
@@ -175,15 +175,15 @@ func filterRecipients(recipients []*recipient.Recipient) []*recipient.Recipient 
 
 	for _, rcpt := range recipients {
 		switch rcpt.Type {
-		case recipient.HandlerTypeMail:
+		case recipient.OutputTypeMail:
 			if useMail {
 				filtered = append(filtered, rcpt)
 			}
-		case recipient.HandlerTypeSlack:
+		case recipient.OutputTypeSlack:
 			if useSlack {
 				filtered = append(filtered, rcpt)
 			}
-		case recipient.HandlerTypeXMPP:
+		case recipient.OutputTypeXMPP:
 			if useXMPP {
 				filtered = append(filtered, rcpt)
 			}

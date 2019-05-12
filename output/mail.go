@@ -1,7 +1,7 @@
 // Copyright © 2019 SIC! Software GmbH
 // Adapted from https://github.com/sensu/sensu-email-handler
 
-package handler
+package output
 
 import (
 	"bytes"
@@ -19,8 +19,8 @@ var (
 	mailBodyTemplate    = "{{.Check.Output}}"
 )
 
-// HandleMail handles mail recipients (recipient.HandlerTypeMail)
-func HandleMail(recipient *recipient.Recipient, event *sensu.Event, config *Config) (rerr error) {
+// Mail handles mail recipients (recipient.HandlerTypeMail)
+func Mail(recipient *recipient.Recipient, event *sensu.Event, config *Config) (rerr error) {
 	if len(config.MailFrom) == 0 {
 		return errors.New("from email is empty")
 	}

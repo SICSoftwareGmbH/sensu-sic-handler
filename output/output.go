@@ -1,6 +1,6 @@
 // Copyright © 2019 SIC! Software GmbH
 
-package handler
+package output
 
 import (
 	"fmt"
@@ -11,8 +11,8 @@ import (
 	"sensu-sic-handler/recipient"
 )
 
-// Handle handles recipients
-func Handle(recipients []*recipient.Recipient, event *sensu.Event, config *Config) error {
+// Notify handles recipients
+func Notify(recipients []*recipient.Recipient, event *sensu.Event, config *Config) error {
 	recipientMap := make(map[string]bool)
 
 	for _, rcpt := range recipients {
@@ -20,13 +20,13 @@ func Handle(recipients []*recipient.Recipient, event *sensu.Event, config *Confi
 			var err error
 
 			switch rcpt.Type {
-			case recipient.HandlerTypeNone:
-			case recipient.HandlerTypeMail:
-				err = HandleMail(rcpt, event, config)
-			case recipient.HandlerTypeXMPP:
-				err = HandleXMPP(rcpt, event, config)
-			case recipient.HandlerTypeSlack:
-				err = HandleSlack(rcpt, event, config)
+			case recipient.OutputTypeNone:
+			case recipient.OutputTypeMail:
+				err = Mail(rcpt, event, config)
+			case recipient.OutputTypeXMPP:
+				err = XMPP(rcpt, event, config)
+			case recipient.OutputTypeSlack:
+				err = Slack(rcpt, event, config)
 			default:
 				fmt.Fprintln(os.Stderr, fmt.Sprintf("unsupported handler: %q", rcpt))
 			}
