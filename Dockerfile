@@ -28,6 +28,11 @@ RUN go get github.com/jgautheron/goconst/cmd/goconst
 # Install ineffassign
 RUN go get github.com/gordonklaus/ineffassign
 
+# Install goreleaser
+RUN wget -q -O /tmp/goreleaser.tar.gz \
+  https://github.com/goreleaser/goreleaser/releases/download/v0.106.0/goreleaser_Linux_arm64.tar.gz && \
+  tar -xf /tmp/goreleaser.tar.gz -C /usr/local/bin && rm -rf /tmp/*
+
 # Set the working directory
 WORKDIR /go/src/sensu-sic-handler
 

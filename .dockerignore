@@ -5,10 +5,13 @@ docker-compose.yml
 # git
 /.git
 
+# config
+/config.yml
+
 # dep
 /vendor
 
-# deploy
+# dist
 /dist
 
 # misc

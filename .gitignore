@@ -14,7 +14,7 @@
 # dep
 /vendor
 
-# deploy
+# dist
 /dist
 
 # config

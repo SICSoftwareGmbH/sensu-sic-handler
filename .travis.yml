@@ -17,3 +17,19 @@ script:
 
 before_script:
   - echo "REPO ${TRAVIS_REPO_SLUG} TAG ${TRAVIS_TAG}"
+
+deploy:
+  - provider: script
+    script: docker exec ${CONTAINER_ID} sh -c 'goreleaser'
+    skip_cleanup: true
+    on:
+      tags: true
+
+after_deploy:
+  - git clone https://github.com/sensu/sensu-go-bonsai-asset.git bonsai
+  - bonsai/generate-sha512sum.sh
+  - bonsai/github-release-upload.sh github_api_token="${GITHUB_TOKEN}" repo_slug="${TRAVIS_REPO_SLUG}" tag="${TRAVIS_TAG}" filename="dist/$(cat dist/sha512_file)"
+
+env:
+  global:
+    secure: "ZQpzhoXl5OLIPlCFSD2f1J4//FexrkUpsa+kmUn4jK47NP3RGCiT27U9awoqN+8JrMydRD6KkEkA965z6ZLbT2zowq3vSXyDPUwePOEDDLhrnkCLYq3uGhZSrq9eDldbyoMGE0fr/9L24uWPBSi5kAWo7odR8xOWlmfmBjZ1+QW0s72cciteGO837wVHcILEvkYbPF0p0aQgPXUfudwooE5RQwHimsflE+Ob8QYPGwDT7+f1rgLDNwdFV6KtxED5M3Zib38PVgxcxdXR6PSI6elaRUjWxOJDuvkGRDD0NePJk65XFEDfZD/qZ2GTrfZhAb6r8dB3EC7nY/tyjvqzK94T2ZiYjuqCdwv++Tw3fgVHCfvfdFQm6wixnBAprKHZe9gswE3THI7Y1R9+yisetOyzhZbsqv7L39eOorbWc1eFtrgebPcN+dq8Pz3bSWNPXgrFXfx3NaIfx8j5SBKYJy88AXtC4Pj+D275DZnTEWXjzIQJMgwvWU/fukE1lNVFe23g9OKUAcFcTiBgLshQnpyGYAZqtpzUFRMg0fpHBp/YzVIb/gIVZQaeWTM7jRylcg3L3N3gjkEXSd/3ZVGz+6tGfiKt2Tzxkar6Xz9WK6pdC2yX0OpYQrt072ywUjNguHEsRMyb/IVV7tFqY3PoiBGS5x5S5S0EhKYf4cTHdng="
