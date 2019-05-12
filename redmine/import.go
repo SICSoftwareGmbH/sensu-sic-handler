@@ -3,8 +3,8 @@
 package redmine
 
 import (
-	"encoding/json"
 	"errors"
+	"encoding/json"
 
 	"github.com/go-redis/redis"
 	redmine "github.com/mattn/go-redmine"

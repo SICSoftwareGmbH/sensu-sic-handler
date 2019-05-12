@@ -17,5 +17,8 @@
 # deploy
 /dist
 
+# config
+/config.yml
+
 # misc
 /.data

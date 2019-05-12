@@ -3,8 +3,8 @@
 package recipient
 
 import (
-	"fmt"
 	"os"
+	"fmt"
 	"strings"
 
 	"github.com/go-redis/redis"

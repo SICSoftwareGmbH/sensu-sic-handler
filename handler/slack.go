@@ -4,14 +4,20 @@
 package handler
 
 import (
-	"github.com/bluele/slack"
+	"errors"
+
 	sensu "github.com/sensu/sensu-go/types"
+	"github.com/bluele/slack"
 
 	"sensu-sic-handler/recipient"
 )
 
 // HandleSlack handles slack recipients (recipient.HandlerTypeSlack)
 func HandleSlack(recipient *recipient.Recipient, event *sensu.Event, config *Config) error {
+	if len(config.SlackWebhookURL) == 0 {
+		return errors.New("webhook url is empty")
+	}
+
 	hook := slack.NewWebHook(config.SlackWebhookURL)
 
 	return hook.PostMessage(&slack.WebHookPostPayload{

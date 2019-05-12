@@ -3,8 +3,8 @@
 package handler
 
 import (
-	"fmt"
 	"os"
+	"fmt"
 
 	sensu "github.com/sensu/sensu-go/types"
 
