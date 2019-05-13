@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/go-redis/redis"
-	redmine "github.com/mattn/go-redmine"
+	"github.com/mattn/go-redmine"
 )
 
 // Import imports memberships and users into redis

@@ -81,6 +81,21 @@ func init() {
 		"http://s3-us-west-2.amazonaws.com/sensuapp.org/sensu.png",
 		"A URL to an image to use as the user avatar")
 
+	eventCmd.PersistentFlags().String(
+		"xmpp-server",
+		"",
+		"The XMPP server to send messages to")
+
+	eventCmd.PersistentFlags().String(
+		"xmpp-username",
+		"",
+		"The XMPP username used to send messages")
+
+	eventCmd.PersistentFlags().String(
+		"xmpp-password",
+		"",
+		"The XMPP password used for authentication")
+
 	_ = viper.BindPFlag("outputs", eventCmd.PersistentFlags().Lookup("outputs"))
 	_ = viper.BindPFlag("annotation-prefix", eventCmd.PersistentFlags().Lookup("annotation-prefix"))
 	_ = viper.BindPFlag("smtp-address", eventCmd.PersistentFlags().Lookup("smtp-address"))
@@ -88,6 +103,9 @@ func init() {
 	_ = viper.BindPFlag("slack-webhook-url", eventCmd.PersistentFlags().Lookup("slack-webhook-url"))
 	_ = viper.BindPFlag("slack-username", eventCmd.PersistentFlags().Lookup("slack-username"))
 	_ = viper.BindPFlag("slack-icon-url", eventCmd.PersistentFlags().Lookup("slack-icon-url"))
+	_ = viper.BindPFlag("xmpp-server", eventCmd.PersistentFlags().Lookup("xmpp-server"))
+	_ = viper.BindPFlag("xmpp-username", eventCmd.PersistentFlags().Lookup("xmpp-username"))
+	_ = viper.BindPFlag("xmpp-password", eventCmd.PersistentFlags().Lookup("xmpp-password"))
 }
 
 func loadEvent() (*types.Event, error) {
@@ -142,6 +160,9 @@ func handleEvent(event *types.Event) error {
 			SlackWebhookURL: viper.GetString("slack-webhook-url"),
 			SlackUsername:   viper.GetString("slack-username"),
 			SlackIconURL:    viper.GetString("slack-icon-url"),
+			XMPPServer:      viper.GetString("xmpp-server"),
+			XMPPUsername:    viper.GetString("xmpp-username"),
+			XMPPPassword:    viper.GetString("xmpp-password"),
 		}
 
 		recipients := recipient.Parse(redisClient, val)

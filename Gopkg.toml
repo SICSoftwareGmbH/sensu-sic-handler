@@ -24,3 +24,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/bluele/slack"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/mattn/go-xmpp"

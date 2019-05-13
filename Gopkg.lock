@@ -138,6 +138,14 @@
   revision = "2267b9239bac0bb8a7123648f080f264fc5b3973"
 
 [[projects]]
+  branch = "master"
+  digest = "1:aa1a2b0a8403f464aef17453dfebd0fa9edd2e99047c2ff27e29bdb2b58e97f7"
+  name = "github.com/mattn/go-xmpp"
+  packages = ["."]
+  pruneopts = "T"
+  revision = "6093f50721ed2204a87a81109ca5a466a5bec6c1"
+
+[[projects]]
   digest = "1:53bc4cd4914cd7cd52139990d5170d6dc99067ae31c56530621b18b35fc30318"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
@@ -364,6 +372,7 @@
     "github.com/bluele/slack",
     "github.com/go-redis/redis",
     "github.com/mattn/go-redmine",
+    "github.com/mattn/go-xmpp",
     "github.com/sensu/sensu-go/types",
     "github.com/spf13/cobra",
     "github.com/spf13/viper",

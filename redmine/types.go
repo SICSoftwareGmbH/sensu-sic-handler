@@ -3,7 +3,7 @@
 package redmine
 
 import (
-	redmine "github.com/mattn/go-redmine"
+	"github.com/mattn/go-redmine"
 )
 
 type projectMemberships struct {

@@ -9,18 +9,16 @@ import (
 	"net/mail"
 	"net/smtp"
 
-	sensu "github.com/sensu/sensu-go/types"
-
 	"sensu-sic-handler/recipient"
 )
 
 var (
-	mailSubjectTemplate = "[Sensu] {{.Entity.Name}}/{{.Check.Name}}: {{.Check.State}}"
-	mailBodyTemplate    = "{{.Check.Output}}"
+	mailSubjectTemplate = "[Sensu] [{{ .EventAction }}] /{{ .EventKey }}: {{ .Status }}"
+	mailBodyTemplate    = "{{ .FullOutput }}"
 )
 
 // Mail handles mail recipients (recipient.HandlerTypeMail)
-func Mail(recipient *recipient.Recipient, event *sensu.Event, config *Config) (rerr error) {
+func Mail(recipient *recipient.Recipient, event *ExtendedEvent, config *Config) (rerr error) {
 	if len(config.MailFrom) == 0 {
 		return errors.New("from email is empty")
 	}

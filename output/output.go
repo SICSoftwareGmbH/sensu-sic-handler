@@ -15,6 +15,8 @@ import (
 func Notify(recipients []*recipient.Recipient, event *sensu.Event, config *Config) error {
 	recipientMap := make(map[string]bool)
 
+	extendedEvent := extendedEventFromEvent(event)
+
 	for _, rcpt := range recipients {
 		if _, ok := recipientMap[rcpt.ID]; !ok {
 			var err error
@@ -22,11 +24,11 @@ func Notify(recipients []*recipient.Recipient, event *sensu.Event, config *Confi
 			switch rcpt.Type {
 			case recipient.OutputTypeNone:
 			case recipient.OutputTypeMail:
-				err = Mail(rcpt, event, config)
+				err = Mail(rcpt, extendedEvent, config)
 			case recipient.OutputTypeXMPP:
-				err = XMPP(rcpt, event, config)
+				err = XMPP(rcpt, extendedEvent, config)
 			case recipient.OutputTypeSlack:
-				err = Slack(rcpt, event, config)
+				err = Slack(rcpt, extendedEvent, config)
 			default:
 				fmt.Fprintln(os.Stderr, fmt.Sprintf("unsupported handler: %q", rcpt))
 			}
