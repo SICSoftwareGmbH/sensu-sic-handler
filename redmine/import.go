@@ -85,6 +85,11 @@ func redmineProjectsMemberships(client *redmine.Client, projects []redmine.Proje
 
 		for _, m := range items {
 			for _, r := range m.Roles {
+				// users list may contain invalid users
+				if m.User.Id == 0 {
+					continue
+				}
+
 				pm[r.Id] = append(pm[r.Id], m.User)
 			}
 		}
