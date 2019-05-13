@@ -7,13 +7,12 @@ import (
 	"errors"
 
 	"github.com/bluele/slack"
-	sensu "github.com/sensu/sensu-go/types"
 
 	"sensu-sic-handler/recipient"
 )
 
 // Slack handles slack recipients (recipient.HandlerTypeSlack)
-func Slack(recipient *recipient.Recipient, event *sensu.Event, config *Config) error {
+func Slack(recipient *recipient.Recipient, event *ExtendedEvent, config *Config) error {
 	if len(config.SlackWebhookURL) == 0 {
 		return errors.New("webhook url is empty")
 	}
@@ -28,8 +27,8 @@ func Slack(recipient *recipient.Recipient, event *sensu.Event, config *Config) e
 	})
 }
 
-func slackMessageColor(event *sensu.Event) string {
-	switch event.Check.Status {
+func slackMessageColor(event *ExtendedEvent) string {
+	switch event.Event.Check.Status {
 	case 0:
 		return "good"
 	case 2:
@@ -39,26 +38,26 @@ func slackMessageColor(event *sensu.Event) string {
 	}
 }
 
-func slackMessageAttachment(event *sensu.Event) *slack.Attachment {
+func slackMessageAttachment(event *ExtendedEvent) *slack.Attachment {
 	return &slack.Attachment{
 		Title:    "Description",
-		Text:     event.Check.Output,
-		Fallback: formattedMessage(event),
+		Text:     event.Event.Check.Output,
+		Fallback: event.FormattedMessage,
 		Color:    slackMessageColor(event),
 		Fields: []*slack.AttachmentField{
 			{
 				Title: "Status",
-				Value: messageStatus(event),
+				Value: messageEventStatus(event.Event),
 				Short: false,
 			},
 			{
 				Title: "Entity",
-				Value: event.Entity.Name,
+				Value: event.Event.Entity.Name,
 				Short: true,
 			},
 			{
 				Title: "Check",
-				Value: event.Check.Name,
+				Value: event.Event.Check.Name,
 				Short: true,
 			},
 		},

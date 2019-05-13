@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - More detailed errors for Redmine import
 
+### Added
+- XMPP output support
+
 ## [0.0.1] - 2019-05-13
 ### Added
 - Import user mails for project members from Redmine

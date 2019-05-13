@@ -11,7 +11,19 @@ import (
 	sensu "github.com/sensu/sensu-go/types"
 )
 
-func resolveTemplate(templateValue string, event *sensu.Event) (string, error) {
+func extendedEventFromEvent(event *sensu.Event) *ExtendedEvent {
+	return &ExtendedEvent{
+		Event:            event,
+		Status:           messageEventStatus(event),
+		EventAction:      formattedEventAction(event),
+		EventKey:         eventKey(event),
+		Output:           formattedEventOutput(event, 100),
+		FullOutput:       event.Check.Output,
+		FormattedMessage: formattedMessage(event),
+	}
+}
+
+func resolveTemplate(templateValue string, event *ExtendedEvent) (string, error) {
 	var resolved bytes.Buffer
 
 	tmpl, err := template.New("tmpl").Parse(templateValue)
@@ -27,11 +39,7 @@ func resolveTemplate(templateValue string, event *sensu.Event) (string, error) {
 	return resolved.String(), nil
 }
 
-func chomp(s string) string {
-	return strings.Trim(strings.Trim(strings.Trim(s, "\n"), "\r"), "\r\n")
-}
-
-func messageStatus(event *sensu.Event) string {
+func messageEventStatus(event *sensu.Event) string {
 	switch event.Check.Status {
 	case 0:
 		return "Resolved"
@@ -51,20 +59,20 @@ func formattedEventAction(event *sensu.Event) string {
 	}
 }
 
-func eventKey(event *sensu.Event) string {
-	return fmt.Sprintf("%s/%s", event.Entity.Name, event.Check.Name)
-}
-
-func eventSummary(event *sensu.Event, maxLength int) string {
-	output := chomp(event.Check.Output)
+func formattedEventOutput(event *sensu.Event, maxLength int) string {
+	output := strings.Trim(strings.Trim(strings.Trim(event.Check.Output, "\n"), "\r"), "\r\n")
 
 	if len(event.Check.Output) > maxLength {
 		output = output[0:maxLength] + "..."
 	}
 
-	return fmt.Sprintf("%s:%s", eventKey(event), output)
+	return output
+}
+
+func eventKey(event *sensu.Event) string {
+	return fmt.Sprintf("%s/%s", event.Entity.Name, event.Check.Name)
 }
 
 func formattedMessage(event *sensu.Event) string {
-	return fmt.Sprintf("%s - %s", formattedEventAction(event), eventSummary(event, 100))
+	return fmt.Sprintf("[%s] %s - %s", formattedEventAction(event), eventKey(event), formattedEventOutput(event, 100))
 }
