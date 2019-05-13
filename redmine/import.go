@@ -4,7 +4,7 @@ package redmine
 
 import (
 	"encoding/json"
-	"errors"
+	"fmt"
 
 	"github.com/go-redis/redis"
 	redmine "github.com/mattn/go-redmine"
@@ -56,7 +56,7 @@ func redmineProjects(client *redmine.Client) ([]redmine.Project, error) {
 	for lastCount > 0 {
 		items, err := client.Projects()
 		if err != nil {
-			return nil, errors.New("unable to fetch projects")
+			return nil, fmt.Errorf("unable to fetch projects: %q", err)
 		}
 
 		projects = append(projects, items...)
@@ -80,7 +80,7 @@ func redmineProjectsMemberships(client *redmine.Client, projects []redmine.Proje
 
 		items, err := client.Memberships(project.Id)
 		if err != nil {
-			return nil, errors.New("unable to fetch project memberships")
+			return nil, fmt.Errorf("unable to fetch memberships for project %s (%d): %q", project.Identifier, project.Id, err)
 		}
 
 		for _, m := range items {
@@ -107,7 +107,7 @@ func redmineUsers(client *redmine.Client, projectMemberships []projectMembership
 				if _, ok := usersMap[user.Id]; !ok {
 					u, err := client.User(user.Id)
 					if err != nil {
-						return nil, errors.New("unable to fetch user")
+						return nil, fmt.Errorf("unable to fetch user %s (%d): %q", user.Name, user.Id, err)
 					}
 
 					usersMap[user.Id] = *u
