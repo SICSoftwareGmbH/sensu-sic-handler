@@ -3,7 +3,6 @@
 package output
 
 import (
-	"crypto/tls"
 	"errors"
 
 	"github.com/mattn/go-xmpp"
@@ -25,11 +24,6 @@ func XMPP(recipient *recipient.Recipient, event *ExtendedEvent, config *Config) 
 
 	if len(config.XMPPPassword) == 0 {
 		return errors.New("password is empty")
-	}
-
-	xmpp.DefaultConfig = tls.Config{
-		//ServerName:         config.XMPPServer,
-		//InsecureSkipVerify: false,
 	}
 
 	clientOptions := xmpp.Options{
