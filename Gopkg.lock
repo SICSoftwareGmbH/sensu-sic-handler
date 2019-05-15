@@ -14,8 +14,10 @@
   name = "github.com/coreos/etcd"
   packages = [
     "auth/authpb",
+    "etcdserver/api/v3rpc/rpctypes",
     "etcdserver/etcdserverpb",
     "mvcc/mvccpb",
+    "pkg/types",
   ]
   pruneopts = "T"
   revision = "98d308426819d892e149fe45f6fd542464cb1f9d"
@@ -44,22 +46,6 @@
   pruneopts = "T"
   revision = "c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9"
   version = "v1.4.7"
-
-[[projects]]
-  digest = "1:19a4d1c7e0df2c11ac937d9960d190522ef1a98d5f0f5098ae4dc7eacc6dd173"
-  name = "github.com/go-redis/redis"
-  packages = [
-    ".",
-    "internal",
-    "internal/consistenthash",
-    "internal/hashtag",
-    "internal/pool",
-    "internal/proto",
-    "internal/util",
-  ]
-  pruneopts = "T"
-  revision = "d22fde8721cc915a55aeb6b00944a76a92bfeb6e"
-  version = "v6.15.2"
 
 [[projects]]
   digest = "1:c6e109ed32d266dea072dd6d00e3ee26fb960f86ed0ba7f6a07e5d2bfdeab868"
@@ -249,8 +235,16 @@
   version = "v1.3.2"
 
 [[projects]]
+  digest = "1:194feab48e33cf63e78705e342da56807e9236f7b52513dee714e70c1cb3272e"
+  name = "go.etcd.io/etcd"
+  packages = ["clientv3"]
+  pruneopts = "T"
+  revision = "98d308426819d892e149fe45f6fd542464cb1f9d"
+  version = "v3.3.13"
+
+[[projects]]
   branch = "master"
-  digest = "1:dadb7a0fd6196a294db8552352b41554ff862c6d632db861761d89570757a103"
+  digest = "1:1cb0d9798dd8b62514a109c87ad49309c40ed0f7d486eb7613a8c63db60542d2"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -262,15 +256,15 @@
     "trace",
   ]
   pruneopts = "T"
-  revision = "a4d6f7feada510cc50e69a37b484cb0fdc6b7876"
+  revision = "3ec19112720433827bbce8be9342797f5a6aaaf9"
 
 [[projects]]
   branch = "master"
-  digest = "1:283eaa9d5d250ff018de41b535f5d92af28c30facbc27c7e99c78175375b1f44"
+  digest = "1:d8d05f8c15c4b31dead92a37cc99fb4e63da4a5efc1a440a9ae2aae35d40445f"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "T"
-  revision = "a5b02f93d862f065920dd6a40dddc66b60d0dec4"
+  revision = "87c872767d25fb96dfe96c794fd028b38a08440b"
 
 [[projects]]
   digest = "1:0a6103b1dc59b52f7e64a491b398b854c0fcaacde43c25ce468610a64311b72d"
@@ -299,11 +293,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:8a19759d926bef22018755cf07db0b6d46d6bc87d2abbb8b2c9d50cb67724e97"
+  digest = "1:23c5753ad3960260962085191dd606b2517ce6b5b84a2fc2febe65303ab64b5e"
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = "T"
-  revision = "b515fa19cec88c32f305a962f34ae60068947aea"
+  revision = "995ef27e003f584103ecdd0f98e1a0cc9cbf3395"
 
 [[projects]]
   digest = "1:dbb3ac0403bd9f4036537d4aa3a518d049fff68759d40db2ed22eeb83d9892d8"
@@ -321,6 +315,7 @@
     "encoding",
     "encoding/proto",
     "grpclog",
+    "health/grpc_health_v1",
     "internal",
     "internal/backoff",
     "internal/balancerload",
@@ -370,12 +365,12 @@
   analyzer-version = 1
   input-imports = [
     "github.com/bluele/slack",
-    "github.com/go-redis/redis",
     "github.com/mattn/go-redmine",
     "github.com/mattn/go-xmpp",
     "github.com/sensu/sensu-go/types",
     "github.com/spf13/cobra",
     "github.com/spf13/viper",
+    "go.etcd.io/etcd/clientv3",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

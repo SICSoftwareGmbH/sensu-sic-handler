@@ -13,6 +13,7 @@ import (
 	"github.com/sensu/sensu-go/types"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	etcd "go.etcd.io/etcd/clientv3"
 
 	"sensu-sic-handler/output"
 	"sensu-sic-handler/recipient"
@@ -154,6 +155,12 @@ func handleEvent(event *types.Event) error {
 	}
 
 	if val, ok := event.Entity.Annotations[fmt.Sprintf("%s/recipients", viper.GetString("annotation-prefix"))]; ok {
+		etcdClient, err := etcd.New(etcdConfig)
+		if err != nil {
+			return err
+		}
+		defer etcdClient.Close()
+
 		outputConfig := &output.Config{
 			SMTPAddress:     viper.GetString("smtp-address"),
 			MailFrom:        viper.GetString("mail-from"),
@@ -165,11 +172,11 @@ func handleEvent(event *types.Event) error {
 			XMPPPassword:    viper.GetString("xmpp-password"),
 		}
 
-		recipients := recipient.Parse(redisClient, val)
+		recipients := recipient.Parse(etcdClient, val)
 
 		recipients = filterRecipients(recipients)
 
-		err := output.Notify(recipients, event, outputConfig)
+		err = output.Notify(recipients, event, outputConfig)
 		if err != nil {
 			return err
 		}

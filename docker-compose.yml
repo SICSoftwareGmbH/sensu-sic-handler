@@ -1,14 +1,16 @@
 version: '3'
 
 services:
-  redis:
-    image: redis:5-alpine
+  etcd:
+    image: bitnami/etcd:3
     volumes:
-      - ./.data/redis:/data
+      - ./.data/etcd:/opt/bitnami/etcd/data
+    environment:
+      ALLOW_NONE_AUTHENTICATION: 'yes'
 
   dev:
     depends_on:
-      - redis
+      - etcd
     build:
       context: ./
     volumes:

@@ -3,21 +3,23 @@
 package redmine
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
-	"github.com/go-redis/redis"
 	"github.com/mattn/go-redmine"
+	etcd "go.etcd.io/etcd/clientv3"
 )
 
-// Import imports memberships and users into redis
-func Import(url string, token string, redisClient *redis.Client) error {
+// Import imports memberships and users into etcd
+func Import(url string, token string, etcdClient *etcd.Client) error {
 	projectMemberships, users, err := loadRedmineData(url, token)
 	if err != nil {
 		return err
 	}
 
-	err = writeToRedis(redisClient, projectMemberships, users)
+	err = writeToEtcd(etcdClient, projectMemberships, users)
 	if err != nil {
 		return err
 	}
@@ -124,7 +126,7 @@ func redmineUsers(client *redmine.Client, projectMemberships []projectMembership
 	return usersMap, nil
 }
 
-func writeToRedis(client *redis.Client, projectMemberships []projectMemberships, usersMap map[int]redmine.User) error {
+func writeToEtcd(client *etcd.Client, projectMemberships []projectMemberships, usersMap map[int]redmine.User) error {
 	for _, projectMembership := range projectMemberships {
 		for roleID, users := range projectMembership.memberships {
 			mails := make([]string, 0)
@@ -138,7 +140,9 @@ func writeToRedis(client *redis.Client, projectMemberships []projectMemberships,
 				return err
 			}
 
-			err = client.Set(RedisKey(projectMembership.project.Identifier, roleID, "mail"), data, 0).Err()
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			_, err = client.Put(ctx, EtcdKey(projectMembership.project.Identifier, roleID, "mail"), string(data))
+			cancel()
 			if err != nil {
 				return err
 			}

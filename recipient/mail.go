@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-redis/redis"
+	etcd "go.etcd.io/etcd/clientv3"
 )
 
 // ParseMail parse mail recipients (OutputTypeMail)
-func ParseMail(redisClient *redis.Client, value string) []*Recipient {
+func ParseMail(etcdClient *etcd.Client, value string) []*Recipient {
 	recipients := make([]*Recipient, 0)
 
 	args := strings.Split(value, ":")

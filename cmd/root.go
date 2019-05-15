@@ -5,15 +5,17 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
+	"time"
 
-	"github.com/go-redis/redis"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	etcd "go.etcd.io/etcd/clientv3"
 )
 
 var (
-	cfgFile     string
-	redisClient *redis.Client
+	cfgFile    string
+	etcdConfig etcd.Config
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -41,23 +43,11 @@ func init() {
 		"Configuration file to use, defaults to value of SIC_CONFIG env variable")
 
 	rootCmd.PersistentFlags().String(
-		"redis-host",
-		"localhost",
-		"The redis hostname")
+		"etcd-endpoints",
+		"localhost:2379",
+		"Endpoints for etcd, defaults to localhost:2379")
 
-	rootCmd.PersistentFlags().Int(
-		"redis-port",
-		6379,
-		"The redis port")
-
-	rootCmd.PersistentFlags().Int(
-		"redis-db",
-		0,
-		"The redis db number")
-
-	_ = viper.BindPFlag("redis-host", rootCmd.PersistentFlags().Lookup("redis-host"))
-	_ = viper.BindPFlag("redis-port", rootCmd.PersistentFlags().Lookup("redis-port"))
-	_ = viper.BindPFlag("redis-db", rootCmd.PersistentFlags().Lookup("redis-db"))
+	_ = viper.BindPFlag("etcd-endpoints", rootCmd.PersistentFlags().Lookup("etcd-endpoints"))
 }
 
 // setup default values and variables
@@ -73,8 +63,10 @@ func initConfig() {
 		}
 	}
 
-	redisAddr := fmt.Sprintf("%s:%d", viper.GetString("redis-host"), viper.GetInt("redis-port"))
-	redisClient = redis.NewClient(&redis.Options{Addr: redisAddr, DB: viper.GetInt("redis-db")})
+	etcdConfig = etcd.Config{
+		Endpoints:   strings.Split(viper.GetString("etcd-endpoints"), ","),
+		DialTimeout: 2 * time.Second,
+	}
 }
 
 func terminateWithHelpAndMessage(cmd *cobra.Command, msg string) {

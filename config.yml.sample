@@ -1,6 +1,4 @@
-redis-host: redis
-redis-port: 6379
-redis-db: 0
+etcd-endpoints: http://etcd:2379
 
 redmine-url: https://redmine.example.org
 redmine-token: 43787d62a102ca4e37b5cf6f8d92129e99d5f425

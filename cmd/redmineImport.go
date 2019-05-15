@@ -5,6 +5,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	etcd "go.etcd.io/etcd/clientv3"
 
 	"sensu-sic-handler/redmine"
 )
@@ -29,7 +30,14 @@ var redmineImportCmd = &cobra.Command{
 			return
 		}
 
-		err := redmine.Import(viper.GetString("redmine-url"), viper.GetString("redmine-token"), redisClient)
+		etcdClient, err := etcd.New(etcdConfig)
+		if err != nil {
+			terminateWithHelpAndMessage(cmd, "unable to connect to etcd")
+			return
+		}
+		defer etcdClient.Close()
+
+		err = redmine.Import(viper.GetString("redmine-url"), viper.GetString("redmine-token"), etcdClient)
 		if err != nil {
 			terminateWithHelpAndMessage(cmd, err.Error())
 			return

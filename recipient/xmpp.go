@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-redis/redis"
+	etcd "go.etcd.io/etcd/clientv3"
 )
 
 // ParseXMPP parse mail recipients (OutputTypeXMPP)
-func ParseXMPP(redisClient *redis.Client, value string) []*Recipient {
+func ParseXMPP(etcdClient *etcd.Client, value string) []*Recipient {
 	recipients := make([]*Recipient, 0)
 
 	args := strings.Split(value, ":")

@@ -3,24 +3,26 @@
 package recipient
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
-	"github.com/go-redis/redis"
+	etcd "go.etcd.io/etcd/clientv3"
 
 	"sensu-sic-handler/redmine"
 )
 
 // ParseProject parse redmine project recipients
-func ParseProject(redisClient *redis.Client, value string) []*Recipient {
+func ParseProject(etcdClient *etcd.Client, value string) []*Recipient {
 	recipients := make([]*Recipient, 0)
 
 	args := strings.Split(value, ":")
 
 	if len(args) == 2 {
-		mails := readProjectMailsFromRedis(redisClient, args[0], args[1])
+		mails := readProjectMailsFromEtcd(etcdClient, args[0], args[1])
 
 		for _, m := range mails {
 			recipients = append(recipients, &Recipient{
@@ -34,7 +36,7 @@ func ParseProject(redisClient *redis.Client, value string) []*Recipient {
 	return recipients
 }
 
-func readProjectMailsFromRedis(client *redis.Client, projectIdentifier string, roleIDStr string) []string {
+func readProjectMailsFromEtcd(client *etcd.Client, projectIdentifier string, roleIDStr string) []string {
 	var mails []string
 
 	roleID, err := strconv.Atoi(roleIDStr)
@@ -42,12 +44,18 @@ func readProjectMailsFromRedis(client *redis.Client, projectIdentifier string, r
 		return mails
 	}
 
-	val, err := client.Get(redmine.RedisKey(projectIdentifier, roleID, "mail")).Result()
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	resp, err := client.Get(ctx, redmine.EtcdKey(projectIdentifier, roleID, "mail"))
+	cancel()
 	if err != nil {
 		return mails
 	}
 
-	err = json.Unmarshal([]byte(val), &mails)
+	if len(resp.Kvs) != 1 {
+		return mails
+	}
+
+	err = json.Unmarshal(resp.Kvs[0].Value, &mails)
 	if err != nil {
 		return mails
 	}

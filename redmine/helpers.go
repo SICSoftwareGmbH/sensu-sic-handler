@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-// RedisKey generate key for redis project lookups
-func RedisKey(projectIdentifier string, roleID int, suffix string) string {
-	return fmt.Sprintf("project.%s.%d.%s", projectIdentifier, roleID, suffix)
+// EtcdKey generate key for etcd project lookups
+func EtcdKey(projectIdentifier string, roleID int, suffix string) string {
+	return fmt.Sprintf("/sensu.sic.software/project/%s/%d/%s", projectIdentifier, roleID, suffix)
 }

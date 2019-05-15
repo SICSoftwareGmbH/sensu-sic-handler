@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-redis/redis"
+	etcd "go.etcd.io/etcd/clientv3"
 )
 
 // ParseSlack parse mail recipients (OutputTypeSlack)
-func ParseSlack(redisClient *redis.Client, value string) []*Recipient {
+func ParseSlack(etcdClient *etcd.Client, value string) []*Recipient {
 	recipients := make([]*Recipient, 0)
 
 	args := strings.Split(value, ":")

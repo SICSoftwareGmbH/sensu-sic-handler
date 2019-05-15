@@ -14,8 +14,8 @@
   version = "5.7.0"
 
 [[constraint]]
-  name = "github.com/go-redis/redis"
-  version = "6.15.2"
+  name = "go.etcd.io/etcd"
+  version = "3.3.13"
 
 [[constraint]]
   branch = "master"
