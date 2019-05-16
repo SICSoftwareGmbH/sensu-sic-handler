@@ -4,6 +4,7 @@ package output
 
 import (
 	"errors"
+	"time"
 
 	"github.com/mattn/go-xmpp"
 
@@ -37,6 +38,7 @@ func XMPP(recipient *recipient.Recipient, event *ExtendedEvent, config *Config) 
 	if err != nil {
 		return err
 	}
+	defer client.Close()
 
 	msg, err := resolveTemplate(xmppMessageTemplate, event)
 	if err != nil {
@@ -53,6 +55,8 @@ func XMPP(recipient *recipient.Recipient, event *ExtendedEvent, config *Config) 
 	if err != nil {
 		return err
 	}
+
+	time.Sleep(100 * time.Millisecond)
 
 	return nil
 }
@@ -73,6 +77,11 @@ func xmppSendMUC(client *xmpp.Client, remote string, msg string) error {
 	}
 
 	_, err = client.Send(xmpp.Chat{Remote: remote, Type: "groupchat", Text: msg})
+	if err != nil {
+		return err
+	}
+
+	_, err = client.LeaveMUC(remote)
 	if err != nil {
 		return err
 	}
