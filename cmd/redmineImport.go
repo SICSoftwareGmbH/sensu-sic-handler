@@ -16,30 +16,30 @@ var redmineImportCmd = &cobra.Command{
 	Short: "Import recipients from redmine",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 0 {
-			terminateWithHelpAndMessage(cmd, "invalid argument(s) received")
+			terminateWithError("invalid argument(s) received")
 			return
 		}
 
 		if viper.GetString("redmine-url") == "" {
-			terminateWithHelpAndMessage(cmd, "redmine url is empty")
+			terminateWithError("redmine url is empty")
 			return
 		}
 
 		if viper.GetString("redmine-token") == "" {
-			terminateWithHelpAndMessage(cmd, "redmine token is empty")
+			terminateWithError("redmine token is empty")
 			return
 		}
 
 		etcdClient, err := etcd.New(etcdConfig)
 		if err != nil {
-			terminateWithHelpAndMessage(cmd, "unable to connect to etcd")
+			terminateWithError("unable to connect to etcd")
 			return
 		}
 		defer etcdClient.Close()
 
 		err = redmine.Import(viper.GetString("redmine-url"), viper.GetString("redmine-token"), etcdClient)
 		if err != nil {
-			terminateWithHelpAndMessage(cmd, err.Error())
+			terminateWithError(err.Error())
 			return
 		}
 	},

@@ -24,21 +24,26 @@ var eventCmd = &cobra.Command{
 	Use:   "event",
 	Short: "Handle event data",
 	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 0 {
+			terminateWithError("invalid argument(s) received")
+			return
+		}
+
 		event, err := loadEvent()
 		if err != nil {
-			terminateWithHelpAndMessage(cmd, fmt.Sprintf("failed to load event: %s", err.Error()))
+			terminateWithError(fmt.Sprintf("failed to load event: %s", err.Error()))
 			return
 		}
 
 		err = validateEvent(event)
 		if err != nil {
-			terminateWithHelpAndMessage(cmd, fmt.Sprintf("failed to validate event: %s", err.Error()))
+			terminateWithError(fmt.Sprintf("failed to validate event: %s", err.Error()))
 			return
 		}
 
 		err = handleEvent(event)
 		if err != nil {
-			terminateWithHelpAndMessage(cmd, fmt.Sprintf("failed to handle event: %s", err.Error()))
+			terminateWithError(fmt.Sprintf("failed to handle event: %s", err.Error()))
 			return
 		}
 	},

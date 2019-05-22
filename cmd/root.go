@@ -59,7 +59,7 @@ func initConfig() {
 		// If a config file is found, read it in.
 		err := viper.ReadInConfig()
 		if err != nil {
-			terminateWithError(err)
+			terminateWithError(err.Error())
 		}
 	}
 
@@ -69,14 +69,7 @@ func initConfig() {
 	}
 }
 
-func terminateWithHelpAndMessage(cmd *cobra.Command, msg string) {
-	_ = cmd.Help()
-
-	fmt.Fprintln(os.Stderr, "")
+func terminateWithError(msg string) {
 	fmt.Fprintln(os.Stderr, msg)
-}
-
-func terminateWithError(err error) {
-	fmt.Println(err)
 	os.Exit(1)
 }
