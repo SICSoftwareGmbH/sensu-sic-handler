@@ -11,7 +11,7 @@ RUN apk --no-cache --no-progress --update upgrade
 RUN apk --no-cache --no-progress --update add bash build-base curl git ca-certificates
 
 # Install golangci-lint
-RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b /usr/local/bin v1.16.0
+RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b /usr/local/bin v1.17.1
 
 # Install goreleaser
 RUN wget -q -O /tmp/goreleaser.tar.gz \

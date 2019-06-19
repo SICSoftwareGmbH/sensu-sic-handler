@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Do not show help on most error messages
 - Use go modules for vendoring instead of dep
+- Update golangci-lint to v1.17.1
 
 ## [0.2.0] - 2019-05-16
 ### Fixed
