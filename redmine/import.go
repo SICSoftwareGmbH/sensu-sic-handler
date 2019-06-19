@@ -140,7 +140,7 @@ func writeToEtcd(client *etcd.Client, projectMemberships []projectMemberships, u
 				return err
 			}
 
-			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
 			_, err = client.Put(ctx, EtcdKey(projectMembership.project.Identifier, roleID, "mail"), string(data))
 			cancel()
 			if err != nil {

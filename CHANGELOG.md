@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use go modules for vendoring instead of dep
 - Update golangci-lint to v1.17.1
 - Update goreleaser to v0.110.0
+- Increase etcd write timeout to 4 seconds for redmine import
 
 ## [0.2.0] - 2019-05-16
 ### Fixed
