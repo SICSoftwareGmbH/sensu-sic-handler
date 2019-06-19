@@ -18,11 +18,31 @@ go build -o /usr/local/bin/sensu-sic-handler main.go
 
 ## Configuration
 
-TODO
+### Example:
+
+```yaml
+etcd-endpoints: http://etcd:2379
+
+redmine-url: https://redmine.example.com
+redmine-token: foobar
+
+annotation-prefix: com.example
+smtp-address: smtp.example.com:25
+mail-from: sensu@example.com
+slack-webhook-url: https://hooks.slack.com/services/foo/bar/foobar
+slack-username: sensu
+slack-icon-url: http://s3-us-west-2.amazonaws.com/sensuapp.org/sensu.png
+xmpp-server: jabber.example.com
+xmpp-username: sensu@jabber.example.com
+xmpp-password: foobar
+```
 
 ## Usage examples
 
-TODO
+      $ sensu-sic-handler redmine import -c sic-handler.yml
+      $ sensu-sic-handler event -c sic-handler.yml --outputs='mail'
+      $ sensu-sic-handler event -c sic-handler.yml --outputs='slack'
+      $ sensu-sic-handler event -c sic-handler.yml --outputs='xmpp'
 
 [1]: https://docs.sensu.io/sensu-go/5.0/reference/handlers/#how-do-sensu-handlers-work
 [2]: https://github.com/SICSoftwareGmbH/sensu-sic-handler/releases
