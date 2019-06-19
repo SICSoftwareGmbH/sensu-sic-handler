@@ -8,7 +8,7 @@ import (
 
 	"github.com/mattn/go-xmpp"
 
-	"sensu-sic-handler/recipient"
+	"github.com/SICSoftwareGmbH/sensu-sic-handler/recipient"
 )
 
 var xmppMessageTemplate = "{{ .FormattedMessage }}"

@@ -15,8 +15,8 @@ import (
 	"github.com/spf13/viper"
 	etcd "go.etcd.io/etcd/clientv3"
 
-	"sensu-sic-handler/output"
-	"sensu-sic-handler/recipient"
+	"github.com/SICSoftwareGmbH/sensu-sic-handler/output"
+	"github.com/SICSoftwareGmbH/sensu-sic-handler/recipient"
 )
 
 // eventCmd represents the "event" command

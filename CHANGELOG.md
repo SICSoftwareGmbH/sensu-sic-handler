@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Do not show help on most error messages
+- Use go modules for vendoring instead of dep
+
 ## [0.2.0] - 2019-05-16
 ### Fixed
 - Add sleep of 100ms to XMPP output to ensure message is sent before connection closes

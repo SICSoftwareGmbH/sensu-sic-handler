@@ -5,8 +5,8 @@ services:
 
 install:
   - docker build -t sensu-sic-handler .
-  - export CONTAINER_ID="$(docker run -d -e GITHUB_TOKEN -v $(pwd):/go/src/sensu-sic-handler sensu-sic-handler sleep 3600)"
-  - docker exec ${CONTAINER_ID} sh -c 'dep ensure'
+  - export CONTAINER_ID="$(docker run -d -e GITHUB_TOKEN -v $(pwd):/src sensu-sic-handler sleep 3600)"
+  - docker exec ${CONTAINER_ID} sh -c 'go get'
 
 before_script:
   - echo "REPO ${TRAVIS_REPO_SLUG} TAG ${TRAVIS_TAG}"

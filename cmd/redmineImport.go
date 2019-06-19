@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/viper"
 	etcd "go.etcd.io/etcd/clientv3"
 
-	"sensu-sic-handler/redmine"
+	"github.com/SICSoftwareGmbH/sensu-sic-handler/redmine"
 )
 
 // redmineImportCmd represents the "redmine import" command

@@ -12,7 +12,7 @@ import (
 
 	etcd "go.etcd.io/etcd/clientv3"
 
-	"sensu-sic-handler/redmine"
+	"github.com/SICSoftwareGmbH/sensu-sic-handler/redmine"
 )
 
 // ParseProject parse redmine project recipients

@@ -14,4 +14,4 @@ services:
     build:
       context: ./
     volumes:
-      - ./:/go/src/sensu-sic-handler/
+      - ./:/src

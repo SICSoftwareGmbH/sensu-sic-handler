@@ -8,7 +8,7 @@ import (
 
 	sensu "github.com/sensu/sensu-go/types"
 
-	"sensu-sic-handler/recipient"
+	"github.com/SICSoftwareGmbH/sensu-sic-handler/recipient"
 )
 
 // Notify handles recipients

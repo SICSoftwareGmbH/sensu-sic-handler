@@ -2,7 +2,7 @@
 
 package main
 
-import "sensu-sic-handler/cmd"
+import "github.com/SICSoftwareGmbH/sensu-sic-handler/cmd"
 
 func main() {
 	cmd.Execute()

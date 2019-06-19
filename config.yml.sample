@@ -1,11 +1,14 @@
 etcd-endpoints: http://etcd:2379
 
-redmine-url: https://redmine.example.org
-redmine-token: 43787d62a102ca4e37b5cf6f8d92129e99d5f425
+redmine-url: https://redmine.example.com
+redmine-token: foobar
 
-annotation-prefix: example.org
-smtp-address: mail.example.org
-mail-from: sensu@example.org
-slack-webhook-url: https://hooks.slack.com/services/foo/bar
+annotation-prefix: com.example
+smtp-address: smtp.example.com:25
+mail-from: sensu@example.com
+slack-webhook-url: https://hooks.slack.com/services/foo/bar/foobar
 slack-username: sensu
 slack-icon-url: http://s3-us-west-2.amazonaws.com/sensuapp.org/sensu.png
+xmpp-server: jabber.example.com
+xmpp-username: sensu@jabber.example.com
+xmpp-password: foobar

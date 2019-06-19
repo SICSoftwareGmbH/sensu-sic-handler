@@ -9,7 +9,7 @@ import (
 	"net/mail"
 	"net/smtp"
 
-	"sensu-sic-handler/recipient"
+	"github.com/SICSoftwareGmbH/sensu-sic-handler/recipient"
 )
 
 var (

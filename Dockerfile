@@ -10,9 +10,6 @@ RUN apk --no-cache --no-progress --update upgrade
 # Install os dependencies
 RUN apk --no-cache --no-progress --update add bash build-base curl git ca-certificates
 
-# Install dep
-RUN curl -sfL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-
 # Install golangci-lint
 RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b /usr/local/bin v1.16.0
 
@@ -22,7 +19,7 @@ RUN wget -q -O /tmp/goreleaser.tar.gz \
   tar -xf /tmp/goreleaser.tar.gz -C /usr/local/bin && rm -rf /tmp/*
 
 # Set the working directory
-WORKDIR /go/src/sensu-sic-handler
+WORKDIR /src
 
 # Default command
 CMD ["bash"]

@@ -8,7 +8,7 @@ import (
 
 	"github.com/bluele/slack"
 
-	"sensu-sic-handler/recipient"
+	"github.com/SICSoftwareGmbH/sensu-sic-handler/recipient"
 )
 
 // Slack handles slack recipients (recipient.HandlerTypeSlack)
